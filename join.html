@@ -15,14 +15,16 @@
 <body>
 
 <!-- scroll-following overlays -->
-<div class="scroll-mark scroll-mark--concept" aria-hidden="true">Concept Mockup &middot; Not Final Product</div>
+<div class="ribbon-corner" aria-hidden="true">
+  <div class="ribbon">Concept Mockup &middot; <b>Not Final Product</b></div>
+</div>
 <div class="scroll-mark scroll-mark--copy"><span class="dot"></span>&copy; AhmedEldabah</div>
 
 <!-- ===================== NAV ===================== -->
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="index.html" aria-label="Ace Zone home">
-      <span class="dot"></span><b>ACE<span class="z"> ZONE</span></b>
+      <img src="logo.svg" alt="" class="brand-logo"><b>ACE<span class="z"> ZONE</span></b>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html#about">About</a>
@@ -171,7 +173,7 @@
 <footer class="foot">
   <div class="wrap">
     <div class="foot-cols">
-      <a class="brand" href="index.html"><span class="dot"></span><b>ACE<span class="z"> ZONE</span></b></a>
+      <a class="brand" href="index.html"><img src="logo.svg" alt="" class="brand-logo"><b>ACE<span class="z"> ZONE</span></b></a>
       <div class="foot-links">
         <div>
           <h5>Club</h5>
@@ -206,12 +208,12 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const nav = document.getElementById('nav');
 const burger = document.getElementById('burger');
 const drawer = document.getElementById('drawer');
-const markConcept = document.querySelector('.scroll-mark--concept');
+const markConcept = document.querySelector('.ribbon-corner .ribbon');
 const markCopy    = document.querySelector('.scroll-mark--copy');
 const onScroll = () => {
   const y = window.scrollY;
   nav.classList.toggle('scrolled', y > 24);
-  if (markConcept) markConcept.style.transform = `rotate(45deg) translateY(${Math.sin(y * 0.004) * 8}px)`;
+  if (markConcept) markConcept.style.transform = `rotate(45deg) translateY(${Math.sin(y * 0.004) * 5}px)`;
   if (markCopy)    markCopy.style.transform    = `translateY(${Math.sin(y * 0.006 + 1) * 6}px)`;
 };
 onScroll();

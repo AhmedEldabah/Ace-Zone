@@ -4,18 +4,25 @@
    used STRICTLY for accents / buttons / glow.
    ============================================================ */
 :root{
-  --ink:        #0A0B0C;   /* page background (matte black) */
-  --char:       #121417;   /* panels */
-  --char-2:     #181B20;   /* elevated panels */
+  --ink:        #0A0F1A;   /* page background — deep navy-tinted black */
+  --char:       #111826;   /* panels */
+  --char-2:     #18202F;   /* elevated panels */
   --line:       rgba(255,255,255,.09);
   --line-2:     rgba(255,255,255,.16);
   --white:      #F3F5EF;
-  --mute:       #8A9089;   /* secondary text */
-  --mute-2:     #5C625E;
-  --volt:       #CBFF2E;   /* neon accent */
-  --volt-deep:  #9ED400;
-  --volt-soft:  rgba(203,255,46,.14);
-  --ball:       #E8FF52;
+  --mute:       #8A95A8;   /* secondary text */
+  --mute-2:     #5C6478;
+
+  /* Brand palette (from Ace Zone logo) */
+  --brand-blue:      #1B8EE6;   /* primary brand blue */
+  --brand-blue-deep: #0D5FA8;
+  --brand-blue-soft: rgba(27,142,230,.16);
+
+  /* Accent = brand yellow (replaces former "volt" green) */
+  --volt:       #FFE000;   /* brand yellow accent */
+  --volt-deep:  #E2C200;
+  --volt-soft:  rgba(255,224,0,.14);
+  --ball:       #FFEC1A;
 
   --glass:      rgba(255,255,255,.04);
   --glass-brd:  rgba(255,255,255,.10);
@@ -48,12 +55,13 @@ a{ color:inherit; text-decoration:none; }
 button{ font-family:inherit; cursor:pointer; }
 :focus-visible{ outline:2px solid var(--volt); outline-offset:3px; border-radius:4px; }
 
-/* ambient court-glow backdrop */
+/* ambient court-glow backdrop — brand blue + yellow mix */
 body::before{
   content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
   background:
-    radial-gradient(60vw 50vh at 80% -5%, rgba(203,255,46,.10), transparent 60%),
-    radial-gradient(50vw 40vh at 0% 100%, rgba(203,255,46,.06), transparent 60%),
+    radial-gradient(55vw 48vh at 82% -4%, rgba(255,224,0,.10), transparent 60%),
+    radial-gradient(60vw 50vh at 0% 110%, rgba(27,142,230,.16), transparent 60%),
+    radial-gradient(45vw 45vh at 100% 100%, rgba(27,142,230,.08), transparent 65%),
     var(--ink);
 }
 /* faint court grid */
@@ -92,7 +100,7 @@ h1,h2,h3{ font-family:"Anton", Impact, sans-serif; font-weight:400; text-transfo
   position:relative; transition:transform .25s var(--ease), box-shadow .3s var(--ease), background .3s;
 }
 .btn svg{ width:1em; height:1em; }
-.btn:hover{ transform:translateY(-2px); box-shadow:0 10px 34px rgba(203,255,46,.34); }
+.btn:hover{ transform:translateY(-2px); box-shadow:0 10px 34px rgba(255,224,0,.34); }
 .btn:active{ transform:translateY(0); }
 .btn--ghost{
   background:transparent; color:var(--white); border-color:var(--line-2);
@@ -114,10 +122,15 @@ h1,h2,h3{ font-family:"Anton", Impact, sans-serif; font-weight:400; text-transfo
    NAV
    ============================================================ */
 .nav{ position:fixed; inset:0 0 auto 0; z-index:60; transition:background .4s, border-color .4s; border-bottom:1px solid transparent; }
-.nav.scrolled{ background:rgba(10,11,12,.72); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+.nav.scrolled{ background:rgba(10,15,26,.78); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
 .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:72px; }
-.brand{ display:flex; align-items:center; gap:.6em; font-family:"Anton",sans-serif; font-size:1.35rem; letter-spacing:.02em; text-transform:uppercase; }
-.brand .dot{ width:11px; height:11px; border-radius:50%; background:var(--volt); box-shadow:0 0 14px var(--volt); }
+.brand{ display:flex; align-items:center; gap:.55em; font-family:"Anton",sans-serif; font-size:1.35rem; letter-spacing:.02em; text-transform:uppercase; }
+.brand .brand-logo{
+  width:36px; height:36px; border-radius:9px; display:block;
+  box-shadow:0 4px 14px rgba(13,95,168,.45);
+  transition:transform .4s var(--ease);
+}
+.brand:hover .brand-logo{ transform:rotate(-6deg) scale(1.06); }
 .brand b{ font-weight:400; }
 .brand .z{ color:var(--volt); }
 
@@ -330,7 +343,7 @@ h1,h2,h3{ font-family:"Anton", Impact, sans-serif; font-weight:400; text-transfo
   width:100%; background:rgba(255,255,255,.03); border:1px solid var(--line);
   border-radius:12px; color:var(--white); font-size:1rem; padding:18px 16px 8px; transition:.3s;
 }
-.field input:focus{ border-color:var(--volt); background:rgba(203,255,46,.04); box-shadow:0 0 0 3px var(--volt-soft); }
+.field input:focus{ border-color:var(--volt); background:rgba(255,224,0,.04); box-shadow:0 0 0 3px var(--volt-soft); }
 .field input:focus + label,
 .field input:not(:placeholder-shown) + label{ top:5px; font-size:.66rem; letter-spacing:.06em; color:var(--volt); transform:scale(1); }
 .field input::placeholder{ color:transparent; }
@@ -345,7 +358,7 @@ h1,h2,h3{ font-family:"Anton", Impact, sans-serif; font-weight:400; text-transfo
 .chip input{ position:absolute; opacity:0; inset:0; cursor:pointer; }
 .chip span{ display:inline-block; padding:10px 16px; border-radius:999px; border:1px solid var(--line-2); color:var(--mute); font-size:.9rem; transition:.25s; user-select:none; }
 .chip:hover span{ color:var(--white); border-color:var(--white); }
-.chip input:checked + span{ background:var(--volt); color:#0A0B0C; border-color:var(--volt); font-weight:600; box-shadow:0 6px 20px rgba(203,255,46,.25); }
+.chip input:checked + span{ background:var(--volt); color:#0A0B0C; border-color:var(--volt); font-weight:600; box-shadow:0 6px 20px rgba(255,224,0,.25); }
 .chip input:focus-visible + span{ outline:2px solid var(--white); outline-offset:2px; }
 .group-err{ color:#ff7a7a; font-size:.78rem; margin-top:10px; min-height:1em; opacity:0; transition:.25s; }
 .field-group.invalid .group-err{ opacity:1; }
@@ -410,30 +423,58 @@ html.no-motion .hero-stats,html.no-motion .hero-game{ animation:none !important;
   will-change:transform;
 }
 
-/* Diagonal "concept mockup" ribbon top-right */
-.scroll-mark--concept{
-  top:74px; right:-78px;
-  background:var(--volt);
-  color:#0A0B0C;
+/* Corner-banner ribbon (top-right). The fixed wrapper clips the
+   ribbon's pointed ends so only the full text is visible. */
+.ribbon-corner{
+  position:fixed;
+  top:0; right:0;
+  width:230px; height:230px;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:90;
+}
+.ribbon-corner::after{
+  /* outer triangular shadow that catches the corner — purely cosmetic */
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(225deg, rgba(0,0,0,.25), transparent 55%);
+}
+.ribbon-corner .ribbon{
+  position:absolute;
+  top:48px; right:-72px;
+  width:320px;
+  text-align:center;
+  background:linear-gradient(90deg, var(--brand-blue-deep), var(--brand-blue));
+  color:#FFFFFF;
+  font-family:"Space Mono", monospace;
+  text-transform:uppercase;
   font-weight:700;
-  font-size:.7rem;
-  letter-spacing:.22em;
-  padding:9px 90px;
-  transform:rotate(45deg) translateY(0);
-  box-shadow:0 8px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.2) inset;
+  font-size:.74rem;
+  letter-spacing:.24em;
+  padding:10px 0;
+  transform:rotate(45deg);
+  transform-origin:center;
+  box-shadow:0 8px 26px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.25) inset;
+  border-top:1px solid rgba(255,255,255,.25);
+  border-bottom:1px solid rgba(0,0,0,.35);
   animation:markPulse 3.6s ease-in-out infinite;
+  will-change:transform;
+}
+.ribbon-corner .ribbon b{
+  color:var(--volt);
+  font-weight:700;
+  padding:0 .35em;
 }
 @keyframes markPulse{
-  0%,100%{ filter:brightness(1); box-shadow:0 8px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.2) inset; }
-  50%   { filter:brightness(1.08); box-shadow:0 8px 36px rgba(203,255,46,.35), 0 0 0 1px rgba(0,0,0,.2) inset; }
+  0%,100%{ filter:brightness(1); }
+  50%   { filter:brightness(1.12); }
 }
 
 /* Translucent copyright pill bottom-left */
 .scroll-mark--copy{
   bottom:22px; left:22px;
-  color:rgba(243,245,239,.35);
-  background:rgba(10,11,12,.45);
-  border:1px solid rgba(255,255,255,.08);
+  color:rgba(243,245,239,.42);
+  background:rgba(10,15,26,.55);
+  border:1px solid rgba(255,255,255,.10);
   -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
   padding:7px 14px;
@@ -445,16 +486,15 @@ html.no-motion .hero-stats,html.no-motion .hero-game{ animation:none !important;
 }
 .scroll-mark--copy .dot{
   width:6px; height:6px; border-radius:50%;
-  background:var(--volt); opacity:.6;
+  background:var(--volt); opacity:.75;
   box-shadow:0 0 8px var(--volt);
 }
 
-/* On mobile move the diagonal ribbon to the bottom-right
-   so it doesn't fight with the burger / nav-cta. */
 @media (max-width: 760px){
-  .scroll-mark--concept{
-    top:auto; right:-72px; bottom:84px;
-    font-size:.58rem; padding:6px 80px; letter-spacing:.18em;
+  .ribbon-corner{ width:180px; height:180px; }
+  .ribbon-corner .ribbon{
+    top:34px; right:-80px; width:260px;
+    font-size:.6rem; padding:8px 0; letter-spacing:.18em;
   }
   .scroll-mark--copy{
     bottom:14px; left:14px; font-size:.56rem; padding:5px 10px; letter-spacing:.18em;
@@ -478,7 +518,7 @@ html.no-motion .hero-stats,html.no-motion .hero-game{ animation:none !important;
 .value{ background:linear-gradient(140deg, var(--char) 0%, var(--char-2) 100%); }
 .value::before{
   content:""; position:absolute; left:-40%; top:0; bottom:0; width:30%;
-  background:linear-gradient(110deg, transparent 0%, rgba(203,255,46,.10) 50%, transparent 100%);
+  background:linear-gradient(110deg, transparent 0%, rgba(255,224,0,.10) 50%, transparent 100%);
   transform:skewX(-18deg); transition:left .9s var(--ease);
   pointer-events:none;
 }
@@ -493,8 +533,8 @@ html.no-motion .hero-stats,html.no-motion .hero-game{ animation:none !important;
 /* hero pill subtle pulse */
 .hero-tag .pill{ animation:pillPulse 3s ease-in-out infinite; }
 @keyframes pillPulse{
-  0%,100%{ box-shadow:0 0 0 0 rgba(203,255,46,.0); }
-  50%   { box-shadow:0 0 0 6px rgba(203,255,46,.10); }
+  0%,100%{ box-shadow:0 0 0 0 rgba(255,224,0,.0); }
+  50%   { box-shadow:0 0 0 6px rgba(255,224,0,.10); }
 }
 
 /* hero h1: volt word gets a slow shimmer */
