@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join the Club — Ace Zone</title>
+<meta name="description" content="Join Ace Zone — three quick steps and you're on the list. Premium padel courts, coaching, and a community that plays for keeps." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html" aria-label="Ace Zone home">
+      <span class="dot"></span><b>ACE<span class="z"> ZONE</span></b>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html#about">About</a>
+      <a href="index.html#areas">The Club</a>
+      <a href="index.html#top">Live Rally</a>
+      <a href="join.html">Join</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="join.html" class="btn">Book a court</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- mobile drawer -->
+<nav class="drawer" id="drawer" aria-label="Mobile">
+  <a href="index.html#about">About</a>
+  <a href="index.html#areas">The Club</a>
+  <a href="index.html#top">Live Rally</a>
+  <a href="join.html">Join</a>
+  <a href="join.html" class="btn drawer-cta">Book a court</a>
+  <span class="ig">Instagram · @ace___zone</span>
+</nav>
+
+<main id="top">
+
+<!-- ===================== REGISTRATION ===================== -->
+<section class="section" id="join" style="padding-top:140px">
+  <div class="wrap">
+    <div class="join-grid">
+      <div class="join-copy">
+        <p class="eyebrow reveal">Membership</p>
+        <h2 class="h-section reveal" data-delay="1">Join the<br>club</h2>
+        <p class="reveal" data-delay="1" style="margin-top:18px">Three quick steps and you're on the list. We'll reach out to lock in your first session and match you with players at your level.</p>
+        <ul class="perks reveal" data-delay="2">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg> Priority court booking windows</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg> Free intro clinic for new members</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg> Access to ladders, leagues &amp; socials</li>
+        </ul>
+      </div>
+
+      <!-- multi-step form -->
+      <div class="form-card glass reveal" data-delay="2">
+        <div class="steps-bar" id="stepsBar">
+          <div class="step active" data-step="1"><div class="track"><i></i></div><div class="slabel">You</div></div>
+          <div class="step" data-step="2"><div class="track"><i></i></div><div class="slabel">Your game</div></div>
+          <div class="step" data-step="3"><div class="track"><i></i></div><div class="slabel">Court time</div></div>
+        </div>
+
+        <form id="joinForm" novalidate>
+          <!-- step 1 -->
+          <div class="step-panel show" data-panel="1">
+            <h3>Let's start with you</h3>
+            <p class="hint">The basics so we know who's joining the zone.</p>
+            <div class="field">
+              <input type="text" id="fullName" name="fullName" placeholder=" " autocomplete="name" />
+              <label for="fullName">Full name</label>
+              <div class="err" data-err="fullName"></div>
+            </div>
+            <div class="field">
+              <input type="email" id="email" name="email" placeholder=" " autocomplete="email" />
+              <label for="email">Email address</label>
+              <div class="err" data-err="email"></div>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="linkbtn" hidden>Back</button>
+              <button type="button" class="btn" data-next>Continue
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- step 2 -->
+          <div class="step-panel" data-panel="2">
+            <h3>Your game</h3>
+            <p class="hint">So we can match you with the right players and courts.</p>
+            <div class="field">
+              <input type="tel" id="phone" name="phone" placeholder=" " autocomplete="tel" inputmode="tel" />
+              <label for="phone">Phone number</label>
+              <div class="err" data-err="phone"></div>
+            </div>
+            <div class="field-group" data-group="skill">
+              <span class="gl">Skill level</span>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="skill" value="Beginner"><span>Beginner</span></label>
+                <label class="chip"><input type="radio" name="skill" value="Intermediate"><span>Intermediate</span></label>
+                <label class="chip"><input type="radio" name="skill" value="Advanced"><span>Advanced</span></label>
+              </div>
+              <div class="group-err">Pick the level that fits you best.</div>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="linkbtn" data-back>Back</button>
+              <button type="button" class="btn" data-next>Continue
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- step 3 -->
+          <div class="step-panel" data-panel="3">
+            <h3>When do you play?</h3>
+            <p class="hint">Choose any times that usually work — pick at least one.</p>
+            <div class="field-group" data-group="times">
+              <span class="gl">Preferred booking times</span>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" name="times" value="Weekday mornings"><span>Weekday mornings</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="Weekday evenings"><span>Weekday evenings</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="Weekend mornings"><span>Weekend mornings</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="Weekend evenings"><span>Weekend evenings</span></label>
+              </div>
+              <div class="group-err">Select at least one time that works for you.</div>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="linkbtn" data-back>Back</button>
+              <button type="submit" class="btn">Join the club
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- success -->
+        <div class="success" id="success" role="status" aria-live="polite">
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12l5 5L20 6"/></svg></div>
+          <h3>You're on the list</h3>
+          <p>We'll text you to lock in your first session and pair you with players at your level.</p>
+          <div class="recap" id="recap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-cols">
+      <a class="brand" href="index.html"><span class="dot"></span><b>ACE<span class="z"> ZONE</span></b></a>
+      <div class="foot-links">
+        <div>
+          <h5>Club</h5>
+          <a href="index.html#about">About</a>
+          <a href="index.html#areas">Facilities</a>
+          <a href="index.html#top">Live rally</a>
+        </div>
+        <div>
+          <h5>Play</h5>
+          <a href="join.html">Book a court</a>
+          <a href="join.html">Membership</a>
+          <a href="index.html#areas">Coaching</a>
+        </div>
+        <div>
+          <h5>Follow</h5>
+          <a href="https://instagram.com/ace___zone" target="_blank" rel="noopener">Instagram &#8599;</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>&copy; <span id="year"></span> Ace Zone &mdash; Padel Club</span>
+      <span>Built for players of all levels &middot; @ace___zone</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (REDUCE) document.documentElement.classList.add('no-motion');
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* NAV scroll state + mobile drawer */
+const nav = document.getElementById('nav');
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+onScroll();
+window.addEventListener('scroll', onScroll, { passive:true });
+
+function setDrawer(open){
+  drawer.classList.toggle('open', open);
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+  document.body.classList.toggle('lock', open);
+}
+burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setDrawer(false); });
+
+/* SCROLL REVEAL */
+const reveals = document.querySelectorAll('.reveal');
+if (REDUCE || !('IntersectionObserver' in window)){
+  reveals.forEach(el => el.classList.add('in'));
+} else {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold:.16, rootMargin:'0px 0px -8% 0px' });
+  reveals.forEach(el => io.observe(el));
+}
+
+/* MULTI-STEP REGISTRATION FORM */
+(() => {
+  const form    = document.getElementById('joinForm');
+  const panels  = [...form.querySelectorAll('.step-panel')];
+  const stepEls = [...document.querySelectorAll('#stepsBar .step')];
+  const success = document.getElementById('success');
+  const recap   = document.getElementById('recap');
+  let current = 1;
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function show(step){
+    panels.forEach(p => p.classList.toggle('show', +p.dataset.panel === step));
+    stepEls.forEach(s => {
+      const n = +s.dataset.step;
+      s.classList.toggle('active', n === step);
+      s.classList.toggle('done', n < step);
+    });
+    current = step;
+    const first = panels[step-1].querySelector('input');
+    if (first && !REDUCE) setTimeout(() => first.focus(), 280);
+  }
+
+  form.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const f = inp.closest('.field'); if (f) f.classList.remove('invalid');
+      const g = inp.closest('.field-group'); if (g) g.classList.remove('invalid');
+    });
+    inp.addEventListener('change', () => {
+      const g = inp.closest('.field-group'); if (g) g.classList.remove('invalid');
+    });
+  });
+
+  function setErr(name, msg){
+    const field = form.querySelector(`[data-err="${name}"]`)?.closest('.field');
+    const out   = form.querySelector(`[data-err="${name}"]`);
+    if (field) field.classList.add('invalid');
+    if (out) out.textContent = msg;
+  }
+
+  function validateStep(step){
+    let ok = true;
+    if (step === 1){
+      const name = form.fullName.value.trim();
+      const mail = form.email.value.trim();
+      if (name.length < 2){ setErr('fullName','Please enter your full name.'); ok = false; }
+      if (!emailRe.test(mail)){ setErr('email','Enter a valid email address.'); ok = false; }
+    }
+    if (step === 2){
+      const phone = form.phone.value.replace(/[^\d]/g,'');
+      if (phone.length < 7){ setErr('phone','Enter a valid phone number.'); ok = false; }
+      const skill = form.querySelector('input[name="skill"]:checked');
+      if (!skill){ form.querySelector('[data-group="skill"]').classList.add('invalid'); ok = false; }
+    }
+    if (step === 3){
+      const times = form.querySelectorAll('input[name="times"]:checked');
+      if (times.length === 0){ form.querySelector('[data-group="times"]').classList.add('invalid'); ok = false; }
+    }
+    return ok;
+  }
+
+  form.querySelectorAll('[data-next]').forEach(btn => btn.addEventListener('click', () => {
+    if (validateStep(current)) show(current + 1);
+  }));
+  form.querySelectorAll('[data-back]').forEach(btn => btn.addEventListener('click', () => show(current - 1)));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validateStep(3)) return;
+
+    const data = {
+      name:  form.fullName.value.trim(),
+      email: form.email.value.trim(),
+      skill: form.querySelector('input[name="skill"]:checked').value,
+      times: [...form.querySelectorAll('input[name="times"]:checked')].map(t => t.value)
+    };
+    recap.innerHTML =
+      `<div><b>NAME</b> &nbsp;${data.name}</div>` +
+      `<div><b>LEVEL</b> &nbsp;${data.skill}</div>` +
+      `<div><b>TIMES</b> &nbsp;${data.times.join(' &middot; ')}</div>`;
+
+    form.style.display = 'none';
+    document.getElementById('stepsBar').style.display = 'none';
+    success.classList.add('show');
+    success.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block:'center' });
+  });
+})();
+</script>
+</body>
+</html>
