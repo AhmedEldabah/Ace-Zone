@@ -14,6 +14,10 @@
 </head>
 <body>
 
+<!-- scroll-following overlays -->
+<div class="scroll-mark scroll-mark--concept" aria-hidden="true">Concept Mockup &middot; Not Final Product</div>
+<div class="scroll-mark scroll-mark--copy"><span class="dot"></span>&copy; AhmedEldabah</div>
+
 <!-- ===================== NAV ===================== -->
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
@@ -196,7 +200,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const nav = document.getElementById('nav');
 const burger = document.getElementById('burger');
 const drawer = document.getElementById('drawer');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+const markConcept = document.querySelector('.scroll-mark--concept');
+const markCopy    = document.querySelector('.scroll-mark--copy');
+const onScroll = () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 24);
+  if (markConcept) markConcept.style.transform = `rotate(45deg) translateY(${Math.sin(y * 0.004) * 8}px)`;
+  if (markCopy)    markCopy.style.transform    = `translateY(${Math.sin(y * 0.006 + 1) * 6}px)`;
+};
 onScroll();
 window.addEventListener('scroll', onScroll, { passive:true });
 
