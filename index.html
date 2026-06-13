@@ -241,21 +241,6 @@ h1,h2,h3{ font-family:"Anton", Impact, sans-serif; font-weight:400; text-transfo
 .area:hover p{ opacity:1; max-height:80px; }
 
 /* ============================================================
-   LIVE RALLY — canvas
-   ============================================================ */
-.rally-frame{ margin-top:46px; border-radius:var(--r); overflow:hidden; position:relative; border:1px solid var(--line-2); background:#0C0E10; }
-.rally-frame .topbar{ display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--line); }
-.live{ display:flex; align-items:center; gap:9px; font-family:"Space Mono",monospace; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--white); }
-.live .dotlive{ width:8px; height:8px; border-radius:50%; background:var(--volt); box-shadow:0 0 10px var(--volt); animation:blink 1.4s steps(1,end) infinite; }
-@keyframes blink{ 50%{ opacity:.25; } }
-.rally-meta{ font-family:"Space Mono",monospace; font-size:.72rem; color:var(--mute); letter-spacing:.12em; }
-#rally{ display:block; width:100%; height:auto; background:linear-gradient(180deg,#0E1113,#0A0C0D); }
-.rally-foot{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 20px; border-top:1px solid var(--line); flex-wrap:wrap; }
-.rally-foot small{ color:var(--mute); font-size:.82rem; }
-.playbtn{ display:inline-flex; align-items:center; gap:.5em; background:transparent; border:1px solid var(--line-2); color:var(--white); padding:.6em 1.1em; border-radius:999px; font-size:.85rem; font-weight:600; transition:.3s; }
-.playbtn:hover{ border-color:var(--volt); color:var(--volt); }
-
-/* ============================================================
    REGISTRATION — multi-step form
    ============================================================ */
 .join-grid{ display:grid; grid-template-columns:.9fr 1.1fr; gap:40px; align-items:start; margin-top:20px; }
@@ -383,7 +368,7 @@ html.no-motion .ball-float{ animation:none !important; }
     <nav class="nav-links" aria-label="Primary">
       <a href="#about">About</a>
       <a href="#areas">The Club</a>
-      <a href="#rally">Live Rally</a>
+      <a href="rally.html">Live Rally</a>
       <a href="#join">Join</a>
     </nav>
     <div class="nav-cta">
@@ -399,7 +384,7 @@ html.no-motion .ball-float{ animation:none !important; }
 <nav class="drawer" id="drawer" aria-label="Mobile">
   <a href="#about">About</a>
   <a href="#areas">The Club</a>
-  <a href="#rally">Live Rally</a>
+  <a href="rally.html">Live Rally</a>
   <a href="#join">Join</a>
   <a href="#join" class="btn drawer-cta">Book a court</a>
   <span class="ig">Instagram · @ace___zone</span>
@@ -422,7 +407,7 @@ html.no-motion .ball-float{ animation:none !important; }
         <a href="#join" class="btn">Book a court
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a href="#rally" class="btn btn--ghost">Watch a live rally</a>
+        <a href="rally.html" class="btn btn--ghost">Watch a live rally</a>
       </div>
       <div class="hero-stats">
         <div class="s"><div class="n"><em>8</em></div><div class="l">Panoramic courts</div></div>
@@ -626,30 +611,6 @@ html.no-motion .ball-float{ animation:none !important; }
   </div>
 </section>
 
-<!-- ===================== LIVE RALLY (CANVAS) ===================== -->
-<section class="section" id="rally">
-  <div class="wrap">
-    <p class="eyebrow reveal">The atmosphere</p>
-    <h2 class="h-section reveal" data-delay="1">A point in progress</h2>
-    <p class="lede reveal" data-delay="2" style="margin-top:18px">A live-coded rally — physics, glass walls, and two players reading the ball in real time. This is the energy on every Ace Zone court.</p>
-
-    <div class="rally-frame reveal" data-delay="2">
-      <div class="topbar">
-        <span class="live"><span class="dotlive"></span> Live rally</span>
-        <span class="rally-meta" id="rallyMeta">RALLY · 00:00</span>
-      </div>
-      <canvas id="rally" aria-label="Animated padel rally simulation"></canvas>
-      <div class="rally-foot">
-        <small>Endless rally · rendered with HTML5 Canvas physics</small>
-        <button class="playbtn" id="rallyToggle" aria-pressed="true">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" id="rallyIcon"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
-          <span id="rallyLabel">Pause</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ===================== REGISTRATION ===================== -->
 <section class="section" id="join">
   <div class="wrap">
@@ -774,7 +735,7 @@ html.no-motion .ball-float{ animation:none !important; }
           <h5>Club</h5>
           <a href="#about">About</a>
           <a href="#areas">Facilities</a>
-          <a href="#rally">Live rally</a>
+          <a href="rally.html">Live rally</a>
         </div>
         <div>
           <h5>Play</h5>
@@ -947,419 +908,6 @@ updateSbtns();
   });
 })();
 
-/* ============================================================
-   5 · LIVE RALLY — Canvas physics simulation
-   Two stickmen read the ball and rally it across the net.
-   Ball obeys gravity and bounces off floor + glass walls.
-   ============================================================ */
-(() => {
-  const canvas = document.getElementById('rally');
-  const ctx = canvas.getContext('2d');
-  const meta = document.getElementById('rallyMeta');
-  const toggle = document.getElementById('rallyToggle');
-  const icon = document.getElementById('rallyIcon');
-  const label = document.getElementById('rallyLabel');
-
-  let W = 0, H = 0, dpr = 1;
-  let court, ball, P1, P2;
-  let running = !REDUCE;
-  let last = 0, startT = 0, raf = null;
-
-  /* ---- responsive sizing ---- */
-  function resize(){
-    const rect = canvas.getBoundingClientRect();
-    W = rect.width;
-    H = Math.max(300, Math.min(460, W * 0.5));
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.style.height = H + 'px';
-    canvas.width  = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    buildCourt();
-  }
-
-  function buildCourt(){
-    const wallPad = W * 0.05;
-    court = {
-      left:  wallPad,
-      right: W - wallPad,
-      top:   H * 0.10,
-      floor: H * 0.86,
-      netX:  W / 2,
-      netH:  H * 0.30,             // net height up from floor
-      get netTop(){ return this.floor - this.netH; }
-    };
-    court.unit = H;                 // scale reference
-    if (!ball) serve();
-    // keep players inside new bounds
-    if (P1) P1.x = clamp(P1.x, court.left + 30, court.netX - 26);
-    if (P2) P2.x = clamp(P2.x, court.netX + 26, court.right - 30);
-  }
-
-  const clamp = (v,a,b) => v < a ? a : v > b ? b : v;
-  const rnd = (a,b) => a + Math.random() * (b - a);
-
-  function makePlayer(side){
-    // side -1 = left (hits right), +1 = right (hits left)
-    const home = side < 0 ? court.left + (court.netX - court.left) * 0.5
-                          : court.netX + (court.right - court.netX) * 0.5;
-    return {
-      side, x: home, vx: 0,
-      h: H * 0.34,                 // body height
-      reachX: H * 0.10,            // horizontal racket reach
-      swingT: 0, swingDur: 0.26,
-      cooldown: 0, footPhase: rnd(0,6.28),
-      hitFrom: side < 0 ? -1 : 1
-    };
-  }
-
-  function serve(){
-    const fromLeft = Math.random() < 0.5;
-    ball = {
-      x: fromLeft ? court.left + (court.netX - court.left) * 0.5
-                  : court.netX + (court.right - court.netX) * 0.5,
-      y: court.top + H * 0.06,
-      vx: (fromLeft ? 1 : -1) * rnd(W*0.04, W*0.08),
-      vy: 0,
-      r: Math.max(5, H * 0.018),
-      trail: []
-    };
-  }
-
-  /* ---- predict where the ball will be hittable on a side ---- */
-  function predictContactX(side){
-    const contactY = court.floor - H * 0.20;     // racket sweet spot height
-    let x = ball.x, y = ball.y, vx = ball.vx, vy = ball.vy;
-    const g = H * 2.2, dt = 1/120;
-    for (let i = 0; i < 360; i++){
-      vy += g * dt; x += vx * dt; y += vy * dt;
-      if (x - ball.r < court.left){ x = court.left + ball.r; vx = -vx * 0.78; }
-      if (x + ball.r > court.right){ x = court.right - ball.r; vx = -vx * 0.78; }
-      const onSide = side < 0 ? x < court.netX : x > court.netX;
-      if (vy > 0 && y >= contactY && onSide) return x;
-    }
-    return null;
-  }
-
-  /* ---- AI: move toward ball, swing when in range ---- */
-  function updatePlayer(p, dt){
-    const onSide = p.side < 0 ? ball.x < court.netX : ball.x > court.netX;
-    let target;
-    if (onSide){
-      const pred = predictContactX(p.side);
-      target = pred != null ? pred : ball.x;
-    } else {
-      // recover toward home position, drift gently
-      target = p.side < 0 ? court.left + (court.netX - court.left) * 0.5
-                          : court.netX + (court.right - court.netX) * 0.5;
-    }
-    const lo = p.side < 0 ? court.left + 26 : court.netX + 26;
-    const hi = p.side < 0 ? court.netX - 26 : court.right - 26;
-    target = clamp(target, lo, hi);
-
-    const maxSpeed = onSide ? W * 0.65 : W * 0.32;
-    const diff = target - p.x;
-    const desired = clamp(diff * 6, -maxSpeed, maxSpeed);
-    p.vx += (desired - p.vx) * Math.min(1, dt * 9);
-    p.x = clamp(p.x + p.vx * dt, lo, hi);
-
-    if (p.cooldown > 0) p.cooldown -= dt;
-    if (p.swingT > 0)  p.swingT  -= dt;
-
-    // contact window
-    const handY = court.floor - p.h * 0.62;
-    const inBandY = ball.y > court.floor - p.h * 1.05 && ball.y < court.floor - p.h * 0.12;
-    const closeX = Math.abs(ball.x - p.x) < p.reachX + ball.r;
-    if (onSide && inBandY && closeX && p.cooldown <= 0){
-      hitBall(p);
-    }
-  }
-
-  function hitBall(p){
-    p.swingT = p.swingDur;
-    p.cooldown = 0.45;
-    const dir = p.hitFrom;                         // direction toward opponent
-    // aim landing zone on the opponent half
-    ball.vx = dir * rnd(W*0.05, W*0.085);
-    ball.vy = -rnd(H*0.95, H*1.25);                // upward arc so it clears the net
-    // nudge ball off the racket so it doesn't re-trigger
-    ball.x = p.x + dir * (p.reachX * 0.4);
-    ball.y = court.floor - p.h * 0.6;
-  }
-
-  /* ---- ball physics ---- */
-  function updateBall(dt){
-    const g = H * 2.2;
-    ball.vy += g * dt;
-    ball.x  += ball.vx * dt;
-    ball.y  += ball.vy * dt;
-
-    // floor
-    if (ball.y + ball.r > court.floor){
-      ball.y = court.floor - ball.r;
-      ball.vy = -ball.vy * 0.7;
-      ball.vx *= 0.99;
-    }
-    // ceiling
-    if (ball.y - ball.r < court.top){
-      ball.y = court.top + ball.r;
-      ball.vy = -ball.vy * 0.55;
-    }
-    // glass walls
-    if (ball.x - ball.r < court.left){
-      ball.x = court.left + ball.r; ball.vx = -ball.vx * 0.8;
-    }
-    if (ball.x + ball.r > court.right){
-      ball.x = court.right - ball.r; ball.vx = -ball.vx * 0.8;
-    }
-    // net (thin barrier in the middle, only blocks the lower portion)
-    if (ball.y > court.netTop){
-      const prevX = ball.x - ball.vx * dt;
-      if ((prevX < court.netX && ball.x >= court.netX) || (prevX > court.netX && ball.x <= court.netX)){
-        ball.x = prevX < court.netX ? court.netX - ball.r : court.netX + ball.r;
-        ball.vx = -ball.vx * 0.5;
-        ball.vy -= H * 0.2;        // little pop off the tape
-      }
-    }
-
-    // trail
-    ball.trail.push({ x:ball.x, y:ball.y });
-    if (ball.trail.length > 12) ball.trail.shift();
-
-    // re-serve if the ball loses energy or stalls near the floor
-    const speed = Math.hypot(ball.vx, ball.vy);
-    if (speed < W * 0.02 && ball.y > court.floor - ball.r - 3){ serve(); }
-  }
-
-  /* ---- drawing ---- */
-  function drawCourt(){
-    ctx.clearRect(0,0,W,H);
-
-    // floor
-    ctx.fillStyle = 'rgba(255,255,255,0.02)';
-    ctx.fillRect(court.left, court.top, court.right - court.left, court.floor - court.top);
-    // floor line
-    ctx.strokeStyle = 'rgba(255,255,255,.16)';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(court.left, court.floor); ctx.lineTo(court.right, court.floor); ctx.stroke();
-
-    // glass walls
-    ctx.strokeStyle = 'rgba(203,255,46,.30)';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(court.left, court.top);   ctx.lineTo(court.left, court.floor);
-    ctx.moveTo(court.right, court.top);  ctx.lineTo(court.right, court.floor);
-    ctx.stroke();
-    // glass sheen
-    ctx.fillStyle = 'rgba(203,255,46,.05)';
-    ctx.fillRect(court.left, court.top, 10, court.floor - court.top);
-    ctx.fillRect(court.right - 10, court.top, 10, court.floor - court.top);
-
-    // service line on floor
-    ctx.strokeStyle = 'rgba(255,255,255,.10)';
-    ctx.setLineDash([4,8]);
-    ctx.beginPath();
-    ctx.moveTo(court.left + (court.netX-court.left)*0.45, court.floor);
-    ctx.lineTo(court.left + (court.netX-court.left)*0.45, court.floor - 4);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // net
-    const ny = court.netTop;
-    ctx.strokeStyle = 'rgba(243,245,239,.5)';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(court.netX, court.floor); ctx.lineTo(court.netX, ny); ctx.stroke();
-    // net tape
-    ctx.fillStyle = 'rgba(243,245,239,.85)';
-    ctx.fillRect(court.netX - 3, ny - 2, 6, 4);
-    // net mesh
-    ctx.strokeStyle = 'rgba(243,245,239,.18)';
-    ctx.lineWidth = 1;
-    for (let yy = ny; yy < court.floor; yy += 7){
-      ctx.beginPath(); ctx.moveTo(court.netX - 5, yy); ctx.lineTo(court.netX + 5, yy); ctx.stroke();
-    }
-  }
-
-  function drawBall(){
-    // trail
-    for (let i = 0; i < ball.trail.length; i++){
-      const t = ball.trail[i];
-      const a = (i + 1) / ball.trail.length;
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, ball.r * a * 0.9, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(232,255,82,${a * 0.16})`;
-      ctx.fill();
-    }
-    // shadow on floor
-    const sh = clamp(1 - (court.floor - ball.y) / (H*0.6), 0.12, 0.5);
-    ctx.beginPath();
-    ctx.ellipse(ball.x, court.floor - 1.5, ball.r * (1.6*sh+0.6), ball.r*0.45, 0, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(0,0,0,${0.28*sh})`;
-    ctx.fill();
-    // ball
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
-    ctx.fillStyle = '#E8FF52';
-    ctx.shadowColor = 'rgba(203,255,46,.7)';
-    ctx.shadowBlur = 12;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    // seam
-    ctx.strokeStyle = 'rgba(10,11,12,.5)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.r*0.7, -0.6, 0.9);
-    ctx.stroke();
-  }
-
-  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
-
-  function drawPlayer(p, color){
-    const feetY    = court.floor;
-    const legLen   = p.h * 0.45;
-    const hipY     = feetY - legLen;
-    const torso    = p.h * 0.36;
-    const shoulderY= hipY - torso;
-    const headR    = p.h * 0.11;
-    const headCy   = shoulderY - headR * 1.25;
-    const x = p.x;
-
-    const moving = Math.min(1, Math.abs(p.vx) / (W*0.2));
-    const gait = Math.sin(p.footPhase) * (p.h*0.14) * (0.35 + moving);
-
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = color;
-    ctx.lineWidth = Math.max(2.4, p.h*0.05);
-
-    // shadow
-    ctx.beginPath();
-    ctx.ellipse(x, feetY, p.h*0.16, p.h*0.04, 0, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,.3)';
-    ctx.fill();
-
-    // legs
-    ctx.beginPath();
-    ctx.moveTo(x, hipY); ctx.lineTo(x - gait, feetY);
-    ctx.moveTo(x, hipY); ctx.lineTo(x + gait, feetY);
-    ctx.stroke();
-
-    // torso
-    ctx.beginPath();
-    ctx.moveTo(x, hipY); ctx.lineTo(x, shoulderY);
-    ctx.stroke();
-
-    // head
-    ctx.beginPath();
-    ctx.arc(x, headCy, headR, 0, Math.PI*2);
-    ctx.stroke();
-
-    // ---- arms ----
-    const armLen = p.h * 0.42;
-    const dir = p.hitFrom;          // racket-arm reaches toward opponent
-    // non-racket arm swings with gait (back)
-    const swingBack = -gait * 0.6;
-    ctx.beginPath();
-    ctx.moveTo(x, shoulderY + torso*0.1);
-    ctx.lineTo(x - dir*armLen*0.5, shoulderY + torso*0.1 + Math.abs(swingBack)*0.3 + p.h*0.16);
-    ctx.stroke();
-
-    // racket arm — animates through the swing
-    let armAngle;
-    if (p.swingT > 0){
-      const prog = easeOut(1 - p.swingT / p.swingDur);  // 0..1
-      // sweep from cocked-back/up to forward-down toward opponent
-      armAngle = (-2.4 + prog * 2.6);                   // radians from vertical-ish
-    } else {
-      armAngle = -0.7 + Math.sin(p.footPhase + 1) * 0.18; // ready bounce
-    }
-    const ax = x;
-    const ay = shoulderY + torso*0.08;
-    const hx = ax + Math.sin(armAngle) * armLen * dir;
-    const hy = ay - Math.cos(armAngle) * armLen * 0.55 + armLen*0.35;
-    ctx.beginPath();
-    ctx.moveTo(ax, ay); ctx.lineTo(hx, hy);
-    ctx.stroke();
-
-    // racket head (volt) at the hand
-    const rAng = Math.atan2(hy - ay, hx - ax);
-    ctx.save();
-    ctx.translate(hx, hy);
-    ctx.rotate(rAng);
-    ctx.beginPath();
-    ctx.ellipse(p.h*0.07, 0, p.h*0.085, p.h*0.06, 0, 0, Math.PI*2);
-    ctx.strokeStyle = '#CBFF2E';
-    ctx.lineWidth = Math.max(2, p.h*0.035);
-    if (p.swingT > 0){ ctx.shadowColor = 'rgba(203,255,46,.8)'; ctx.shadowBlur = 10; }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  }
-
-  /* ---- main loop ---- */
-  function frame(now){
-    if (!running){ raf = null; return; }
-    if (!last) last = now;
-    let dt = (now - last) / 1000;
-    last = now;
-    dt = Math.min(dt, 1/30);   // clamp for stability
-
-    // advance footstep phase by speed
-    P1.footPhase += (0.4 + Math.abs(P1.vx)/(W*0.18)) * dt * 9;
-    P2.footPhase += (0.4 + Math.abs(P2.vx)/(W*0.18)) * dt * 9;
-
-    updateBall(dt);
-    updatePlayer(P1, dt);
-    updatePlayer(P2, dt);
-
-    drawCourt();
-    drawPlayer(P1, 'rgba(203,255,46,.95)');   // home player = volt
-    drawPlayer(P2, 'rgba(243,245,239,.95)');  // away player = white
-    drawBall();
-
-    // rally timer
-    if (!startT) startT = now;
-    const secs = Math.floor((now - startT)/1000);
-    meta.textContent = `RALLY · ${String(Math.floor(secs/60)).padStart(2,'0')}:${String(secs%60).padStart(2,'0')}`;
-
-    raf = requestAnimationFrame(frame);
-  }
-
-  function start(){ if (raf) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
-  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = null; } }
-
-  function setBtn(){
-    const playing = running;
-    label.textContent = playing ? 'Pause' : 'Play';
-    toggle.setAttribute('aria-pressed', playing);
-    icon.innerHTML = playing
-      ? '<rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect>'
-      : '<path d="M7 4l13 8-13 8z"></path>';
-  }
-  toggle.addEventListener('click', () => { running ? stop() : start(); setBtn(); });
-
-  // init
-  resize();
-  P1 = makePlayer(-1);
-  P2 = makePlayer(1);
-  let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
-
-  // pause when off-screen to save battery
-  if ('IntersectionObserver' in window){
-    new IntersectionObserver((ents) => {
-      ents.forEach(e => {
-        if (!e.isIntersecting && raf){ stop(); setBtn(); }
-        else if (e.isIntersecting && !REDUCE && !raf){ start(); setBtn(); }
-      });
-    }, { threshold:.15 }).observe(canvas);
-  }
-
-  if (running) start();
-  // render one static frame even when reduced-motion keeps it paused
-  if (!running){ drawCourt(); drawPlayer(P1,'rgba(203,255,46,.95)'); drawPlayer(P2,'rgba(243,245,239,.95)'); drawBall(); }
-  setBtn();
-})();
 </script>
 </body>
 </html>
