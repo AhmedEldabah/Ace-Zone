@@ -26,7 +26,6 @@
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html#about">About</a>
-      <a href="index.html#areas">The Club</a>
       <a href="index.html#top">Live Rally</a>
       <a href="join.html">Join</a>
     </nav>
@@ -42,7 +41,6 @@
 <!-- mobile drawer -->
 <nav class="drawer" id="drawer" aria-label="Mobile">
   <a href="index.html#about">About</a>
-  <a href="index.html#areas">The Club</a>
   <a href="index.html#top">Live Rally</a>
   <a href="join.html">Join</a>
   <a href="join.html" class="btn drawer-cta">Book a court</a>
@@ -128,14 +126,24 @@
             <h3>When do you play?</h3>
             <p class="hint">Choose any times that usually work — pick at least one.</p>
             <div class="field-group" data-group="times">
-              <span class="gl">Preferred booking times</span>
-              <div class="chips">
-                <label class="chip"><input type="checkbox" name="times" value="Weekday mornings"><span>Weekday mornings</span></label>
-                <label class="chip"><input type="checkbox" name="times" value="Weekday evenings"><span>Weekday evenings</span></label>
-                <label class="chip"><input type="checkbox" name="times" value="Weekend mornings"><span>Weekend mornings</span></label>
-                <label class="chip"><input type="checkbox" name="times" value="Weekend evenings"><span>Weekend evenings</span></label>
+              <span class="gl">Preferred booking slot (1-hour)</span>
+              <div class="chips chips--slots">
+                <label class="chip"><input type="checkbox" name="times" value="10:00 AM – 11:00 AM"><span>10 – 11 AM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="11:00 AM – 12:00 PM"><span>11 AM – 12 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="12:00 PM – 1:00 PM"><span>12 – 1 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="1:00 PM – 2:00 PM"><span>1 – 2 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="2:00 PM – 3:00 PM"><span>2 – 3 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="3:00 PM – 4:00 PM"><span>3 – 4 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="4:00 PM – 5:00 PM"><span>4 – 5 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="5:00 PM – 6:00 PM"><span>5 – 6 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="6:00 PM – 7:00 PM"><span>6 – 7 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="7:00 PM – 8:00 PM"><span>7 – 8 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="8:00 PM – 9:00 PM"><span>8 – 9 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="9:00 PM – 10:00 PM"><span>9 – 10 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="10:00 PM – 11:00 PM"><span>10 – 11 PM</span></label>
+                <label class="chip"><input type="checkbox" name="times" value="11:00 PM – 12:00 AM"><span>11 PM – 12 AM</span></label>
               </div>
-              <div class="group-err">Select at least one time that works for you.</div>
+              <div class="group-err">Select at least one slot that works for you.</div>
             </div>
             <div class="form-nav">
               <button type="button" class="linkbtn" data-back>Back</button>
@@ -168,14 +176,12 @@
         <div>
           <h5>Club</h5>
           <a href="index.html#about">About</a>
-          <a href="index.html#areas">Facilities</a>
           <a href="index.html#top">Live rally</a>
         </div>
         <div>
           <h5>Play</h5>
           <a href="join.html">Book a court</a>
           <a href="join.html">Membership</a>
-          <a href="index.html#areas">Coaching</a>
         </div>
         <div>
           <h5>Follow</h5>
@@ -220,6 +226,15 @@ function setDrawer(open){
 burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
 drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') setDrawer(false); });
+
+/* button ripple position tracking */
+document.querySelectorAll('.btn').forEach(b => {
+  b.addEventListener('pointermove', e => {
+    const r = b.getBoundingClientRect();
+    b.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+    b.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+  });
+});
 
 /* SCROLL REVEAL */
 const reveals = document.querySelectorAll('.reveal');
